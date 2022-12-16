@@ -47,3 +47,4 @@ CMakeLists.txt.user
 /Source/Core/DolphinUWP/BundleArtifacts
 /Source/Core/DolphinUWP/DolphinUWP_TemporaryKey.pfx
 /Source/Core/DolphinNoGUI/DolphinNoGUI.aps
+/Source/x64/Debug/SDL-UWP
