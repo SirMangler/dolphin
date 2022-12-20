@@ -122,6 +122,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       openPicker.FileTypeFilter().Append(L".wbfs");
       openPicker.FileTypeFilter().Append(L".gcm");
       openPicker.FileTypeFilter().Append(L".gcz");
+      openPicker.FileTypeFilter().Append(L".json");
       openPicker.FileTypeFilter().Append(L".elf");
       openPicker.FileTypeFilter().Append(L".dol");
       openPicker.FileTypeFilter().Append(L".tgc");
