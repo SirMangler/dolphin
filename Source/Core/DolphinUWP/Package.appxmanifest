@@ -34,6 +34,10 @@
               <uap:FileType>.gcz</uap:FileType>
               <uap:FileType>.gcm</uap:FileType>
               <uap:FileType>.json</uap:FileType>
+              <uap:FileType>.elf</uap:FileType>
+              <uap:FileType>.dol</uap:FileType>
+              <uap:FileType>.tgc</uap:FileType>
+              <uap:FileType>.wad</uap:FileType>
             </uap:SupportedFileTypes>
           </uap:FileOpenPicker>
         </uap:Extension>
