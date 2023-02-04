@@ -295,6 +295,13 @@
       <ForceSymbolReferences Condition="'$(Configuration)|$(Platform)'=='Release UWP|Win32'">
       </ForceSymbolReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>
+				mkdir Sys
+				robocopy "..\..\..\Data\Sys\." "Sys\." /xf *.vsh /E /R:0 /W:0
+				EXIT 0
+			</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="D3DWindow.h" />
