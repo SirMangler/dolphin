@@ -23,6 +23,7 @@
 
 #include <fmt/format.h>
 
+#include "Common/HRWrap.h"
 #include "Common/Logging/Log.h"
 #include "Common/StringUtil.h"
 #include "InputCommon/ControllerInterface/ControllerInterface.h"
@@ -512,7 +513,7 @@ private:
     catch (winrt::hresult_error error)
     {
       ERROR_LOG_FMT(CONTROLLERINTERFACE,
-                    "WGInput: IRawGameController::GetCurrentReading failed: {:x}", error.code());
+                    "WGInput: IRawGameController::GetCurrentReading failed: {}", error.code());
     }
 
     // IGamepad:
@@ -524,7 +525,7 @@ private:
       }
       catch (winrt::hresult_error error)
       {
-        ERROR_LOG_FMT(CONTROLLERINTERFACE, "WGInput: IGamepad::GetCurrentReading failed: {:x}",
+        ERROR_LOG_FMT(CONTROLLERINTERFACE, "WGInput: IGamepad::GetCurrentReading failed: {}",
                       error.code());
       }
     }
