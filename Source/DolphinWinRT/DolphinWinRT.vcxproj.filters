@@ -81,43 +81,79 @@
     <Filter Include="Sys\FrontendThemes\Flipper">
       <UniqueIdentifier>{c03e2e1a-be33-45ee-8a1a-41f099d85c8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sys\Resources">
+      <UniqueIdentifier>{15b89a8c-9a24-4140-b610-8053b9ebde17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
     <None Include="packages.config" />
     <None Include="DolphinWinRT_TemporaryKey.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="readme.txt" />
-    <None Include="Sys\GC\dsp_coef.bin">
-      <Filter>Sys</Filter>
-    </None>
-    <None Include="Sys\GC\dsp_rom.bin">
-      <Filter>Sys</Filter>
-    </None>
-    <None Include="Sys\GC\font_japanese.bin">
-      <Filter>Sys</Filter>
-    </None>
-    <None Include="Sys\GC\font_western.bin">
-      <Filter>Sys</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\misc.bin">
-      <Filter>Sys</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\nwc24dl.bin">
-      <Filter>Sys</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\nwc24fl.bin">
-      <Filter>Sys</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\nwc24fls.bin">
-      <Filter>Sys</Filter>
-    </None>
     <None Include="Sys\codehandler.bin">
       <Filter>Sys</Filter>
     </None>
     <None Include="Sys\totaldb.dsy">
       <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\misc.bin">
+      <Filter>Sys\Wii\shared2\wc24</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24dl.bin">
+      <Filter>Sys\Wii\shared2\wc24</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24fl.bin">
+      <Filter>Sys\Wii\shared2\wc24</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24fls.bin">
+      <Filter>Sys\Wii\shared2\wc24</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24msg.cbk">
+      <Filter>Sys\Wii\shared2\wc24</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24msg.cfg">
+      <Filter>Sys\Wii\shared2\wc24</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\mbox\wc24recv.ctl">
+      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\mbox\wc24recv.mbx">
+      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\mbox\wc24send.ctl">
+      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\mbox\wc24send.mbx">
+      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
+    </None>
+    <None Include="Sys\Profiles\Wiimote\Classic.ini">
+      <Filter>Sys\Profiles\Wiimote</Filter>
+    </None>
+    <None Include="Sys\Profiles\Wiimote\Sideways.ini">
+      <Filter>Sys\Profiles\Wiimote</Filter>
+    </None>
+    <None Include="Sys\Profiles\Wiimote\Wii Remote with MotionPlus Pointing.ini">
+      <Filter>Sys\Profiles\Wiimote</Filter>
+    </None>
+    <None Include="Sys\GC\dsp_coef.bin">
+      <Filter>Sys\GC</Filter>
+    </None>
+    <None Include="Sys\GC\dsp_rom.bin">
+      <Filter>Sys\GC</Filter>
+    </None>
+    <None Include="Sys\GC\font_japanese.bin">
+      <Filter>Sys\GC</Filter>
+    </None>
+    <None Include="Sys\GC\font_western.bin">
+      <Filter>Sys\GC</Filter>
+    </None>
+    <None Include="Sys\GameSettings\0000000100000002.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\C.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\D43.ini">
+      <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\D43E01.ini">
       <Filter>Sys\GameSettings</Filter>
@@ -602,6 +638,9 @@
     <None Include="Sys\GameSettings\G6Q.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
+    <None Include="Sys\GameSettings\G6S.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
     <None Include="Sys\GameSettings\G6T.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
@@ -666,6 +705,9 @@
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\GAP.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\GAS.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\GAU.ini">
@@ -1076,6 +1118,9 @@
     <None Include="Sys\GameSettings\GJD.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
+    <None Include="Sys\GameSettings\GJF.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
     <None Include="Sys\GameSettings\GJK.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
@@ -1283,6 +1328,9 @@
     <None Include="Sys\GameSettings\GNO.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
+    <None Include="Sys\GameSettings\GNW.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
     <None Include="Sys\GameSettings\GNWE69.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
@@ -1463,6 +1511,9 @@
     <None Include="Sys\GameSettings\GSAP01.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
+    <None Include="Sys\GameSettings\GSB.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
     <None Include="Sys\GameSettings\GSM.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
@@ -1539,6 +1590,9 @@
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\GTW.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\GTY.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\GTZ.ini">
@@ -1623,6 +1677,9 @@
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\GW7.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\GW9.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\GWJ.ini">
@@ -2678,6 +2735,9 @@
     <None Include="Sys\GameSettings\RHR.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
+    <None Include="Sys\GameSettings\RHT.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
     <None Include="Sys\GameSettings\RHV.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
@@ -2802,6 +2862,9 @@
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\RLD.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\RLEEFS.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\RLI.ini">
@@ -2948,6 +3011,12 @@
     <None Include="Sys\GameSettings\RO3.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
+    <None Include="Sys\GameSettings\RO7.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\RO8.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
     <None Include="Sys\GameSettings\RO9.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
@@ -3092,6 +3161,9 @@
     <None Include="Sys\GameSettings\RQF.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
+    <None Include="Sys\GameSettings\RQL.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
     <None Include="Sys\GameSettings\RQM.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
@@ -3204,6 +3276,9 @@
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\RSN.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\RSO.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\RSP.ini">
@@ -3408,6 +3483,9 @@
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\RXH.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\RXI.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\RXR.ini">
@@ -3719,6 +3797,9 @@
     <None Include="Sys\GameSettings\SEV.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
+    <None Include="Sys\GameSettings\SF2.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
     <None Include="Sys\GameSettings\SF7.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
@@ -3732,6 +3813,9 @@
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\SFR.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\SFU.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\SG2.ini">
@@ -3921,6 +4005,9 @@
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\SMO.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\SMS.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
     <None Include="Sys\GameSettings\SMU.ini">
@@ -4805,39 +4892,8 @@
     <None Include="Sys\GameSettings\XIV.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
-    <None Include="Sys\GameSettings\0000000100000002.ini">
-      <Filter>Sys\GameSettings</Filter>
-    </None>
-    <None Include="Sys\GameSettings\C.ini">
-      <Filter>Sys\GameSettings</Filter>
-    </None>
-    <None Include="Sys\GameSettings\D43.ini">
-      <Filter>Sys\GameSettings</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\mbox\wc24recv.ctl">
-      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\mbox\wc24recv.mbx">
-      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\mbox\wc24send.ctl">
-      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\mbox\wc24send.mbx">
-      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\nwc24msg.cfg">
-      <Filter>Sys\Wii\shared2\wc24</Filter>
-    </None>
-    <None Include="Sys\Wii\shared2\wc24\nwc24msg.cbk">
-      <Filter>Sys\Wii\shared2\wc24</Filter>
-    </None>
-    <None Include="Sys\Profiles\Wiimote\Classic.ini">
-      <Filter>Sys\Profiles\Wiimote</Filter>
-    </None>
-    <None Include="Sys\Profiles\Wiimote\Sideways.ini">
-      <Filter>Sys\Profiles\Wiimote</Filter>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Text Include="Sys\FrontendThemes\Flipper\carousel_background_all.png">
       <Filter>Sys\FrontendThemes\Flipper</Filter>
     </Text>
@@ -4880,8 +4936,6 @@
     <Text Include="Sys\FrontendThemes\Flipper\menu_background.png">
       <Filter>Sys\FrontendThemes\Flipper</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="Sys\wiitdb-de.txt">
       <Filter>Sys</Filter>
     </Text>
@@ -4921,9 +4975,16 @@
     <Text Include="Sys\Wii\shared2\wc24\mbox\Readme.txt">
       <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
     </Text>
+    <Text Include="Sys\GC\font-licenses.txt">
+      <Filter>Sys\GC</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="Sys\Resources\NotoSansJP-Regular.ttf" />
-    <Font Include="Sys\Resources\Roboto-Regular.ttf" />
+    <Font Include="Sys\Resources\NotoSansJP-Regular.ttf">
+      <Filter>Sys\Resources</Filter>
+    </Font>
+    <Font Include="Sys\Resources\Roboto-Regular.ttf">
+      <Filter>Sys\Resources</Filter>
+    </Font>
   </ItemGroup>
 </Project>

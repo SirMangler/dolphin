@@ -43,3 +43,5 @@ CMakeLists.txt.user
 /Source/DolphinWinRT/Sys
 /Source/DolphinWinRT/BundleArtifacts
 /Source/AppPackages/
+/Source/packages
+/Source/x64

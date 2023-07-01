@@ -15,16 +15,12 @@
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.19041.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.17134.0</WindowsTargetPlatformMinVersion>
+	<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+	<WindowsTargetPlatformMinVersion>10.0.22621.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
-    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
-    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
-    <PlatformToolset Condition="'$(VisualStudioVersion)' == '14.0'">v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -74,7 +70,7 @@
     <PreBuildEvent>
       <Command>
 				mkdir Sys
-				robocopy "..\..\Data\Sys\." "Sys\." /xf *.vsh /E /R:0 /W:0
+				robocopy "..\..\Data\Sys\." "Sys\." /E /R:0 /W:0
 				EXIT 0
 	  </Command>
     </PreBuildEvent>
@@ -119,12 +115,6 @@
     <None Include="DolphinWinRT_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
-    <None Include="Sys\codehandler.bin">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="Sys\GameSettings\0000000100000002.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -617,6 +607,9 @@
     <None Include="Sys\GameSettings\G6Q.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\GameSettings\G6S.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\G6T.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -681,6 +674,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\GAP.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\GAS.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\GAU.ini">
@@ -1091,6 +1087,9 @@
     <None Include="Sys\GameSettings\GJD.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\GameSettings\GJF.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\GJK.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -1298,6 +1297,9 @@
     <None Include="Sys\GameSettings\GNO.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\GameSettings\GNW.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\GNWE69.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -1478,6 +1480,9 @@
     <None Include="Sys\GameSettings\GSAP01.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\GameSettings\GSB.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\GSM.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -1554,6 +1559,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\GTW.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\GTY.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\GTZ.ini">
@@ -1638,6 +1646,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\GW7.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\GW9.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\GWJ.ini">
@@ -2693,6 +2704,9 @@
     <None Include="Sys\GameSettings\RHR.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\GameSettings\RHT.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\RHV.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -2817,6 +2831,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\RLD.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\RLEEFS.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\RLI.ini">
@@ -2963,6 +2980,12 @@
     <None Include="Sys\GameSettings\RO3.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\GameSettings\RO7.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\RO8.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\RO9.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -3107,6 +3130,9 @@
     <None Include="Sys\GameSettings\RQF.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\GameSettings\RQL.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\RQM.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -3219,6 +3245,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\RSN.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\RSO.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\RSP.ini">
@@ -3423,6 +3452,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\RXH.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\RXI.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\RXR.ini">
@@ -3734,6 +3766,9 @@
     <None Include="Sys\GameSettings\SEV.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\GameSettings\SF2.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\SF7.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -3747,6 +3782,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\SFR.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\SFU.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\SG2.ini">
@@ -3936,6 +3974,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\SMO.ini">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\GameSettings\SMS.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\GameSettings\SMU.ini">
@@ -4838,7 +4879,7 @@
     <None Include="Sys\Profiles\Wiimote\Sideways.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Sys\totaldb.dsy">
+    <None Include="Sys\Profiles\Wiimote\Wii Remote with MotionPlus Pointing.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\Wii\shared2\wc24\mbox\wc24recv.ctl">
@@ -4871,6 +4912,15 @@
     <None Include="Sys\Wii\shared2\wc24\nwc24msg.cfg">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Sys\codehandler.bin">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Sys\totaldb.dsy">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <Text Include="Sys\GC\font-licenses.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
     <Text Include="Sys\wiitdb-de.txt">
       <DeploymentContent>true</DeploymentContent>
     </Text>
@@ -4905,9 +4955,6 @@
       <DeploymentContent>true</DeploymentContent>
     </Text>
     <Text Include="Sys\wiitdb-zh_TW.txt">
-      <DeploymentContent>true</DeploymentContent>
-    </Text>
-    <Text Include="Sys\Wii\shared2\wc24\mbox\Readme.txt">
       <DeploymentContent>true</DeploymentContent>
     </Text>
     <Text Include="Sys\FrontendThemes\Default\carousel_background_all.png">
@@ -4952,12 +4999,15 @@
     <Text Include="Sys\FrontendThemes\Flipper\menu_background.png">
       <DeploymentContent>true</DeploymentContent>
     </Text>
+    <Text Include="Sys\Wii\shared2\wc24\mbox\Readme.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(CoreDir)DolphinLib.vcxproj">
       <Project>{D79392F7-06D6-4B4B-A39F-4D587C215D3A}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\source\repos\dolphin\Externals\SDL\SDL\VisualC-WinRT\SDL-UWP.vcxproj">
+    <ProjectReference Include="$(ExternalsDir)SDL\SDL\VisualC-WinRT\SDL-UWP.vcxproj">
       <Project>{89e9b32e-a86a-47c3-a948-d2b1622925ce}</Project>
     </ProjectReference>
   </ItemGroup>
