@@ -16,6 +16,7 @@
 #include "VideoBackends/D3D12/Common.h"
 #include "VideoBackends/D3D12/D3D12StreamBuffer.h"
 #include "VideoBackends/D3D12/DescriptorHeapManager.h"
+#include "VideoCommon/FramebufferManager.h"
 #include "VideoCommon/VideoConfig.h"
 
 namespace DX12
@@ -65,11 +66,13 @@ std::vector<u32> DXContext::GetAAModes(u32 adapter_index)
       return {};
   }
 
+  const DXGI_FORMAT target_format =
+      D3DCommon::GetDXGIFormatForAbstractFormat(FramebufferManager::GetEFBColorFormat(), false);
   std::vector<u32> aa_modes;
   for (u32 samples = 1; samples < D3D12_MAX_MULTISAMPLE_SAMPLE_COUNT; ++samples)
   {
     D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS multisample_quality_levels = {};
-    multisample_quality_levels.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    multisample_quality_levels.Format = target_format;
     multisample_quality_levels.SampleCount = samples;
 
     temp_device->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS,
@@ -85,7 +88,8 @@ std::vector<u32> DXContext::GetAAModes(u32 adapter_index)
 
 bool DXContext::SupportsTextureFormat(DXGI_FORMAT format)
 {
-  constexpr u32 required = D3D12_FORMAT_SUPPORT1_TEXTURE2D | D3D12_FORMAT_SUPPORT1_SHADER_SAMPLE;
+  constexpr u32 required = D3D12_FORMAT_SUPPORT1_TEXTURE2D | D3D12_FORMAT_SUPPORT1_TEXTURECUBE |
+                           D3D12_FORMAT_SUPPORT1_SHADER_SAMPLE;
 
   D3D12_FEATURE_DATA_FORMAT_SUPPORT support = {format};
   return SUCCEEDED(m_device->CheckFeatureSupport(D3D12_FEATURE_FORMAT_SUPPORT, &support,

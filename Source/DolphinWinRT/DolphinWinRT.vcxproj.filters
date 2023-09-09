@@ -154,6 +154,38 @@
     </None>
     <None Include="Sys\GameSettings\D43.ini">
       <Filter>Sys\GameSettings</Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+    <None Include="Sys\GC\dsp_coef.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\GC\dsp_rom.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\GC\font_japanese.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\GC\font_western.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\misc.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24dl.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24fl.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24fls.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\codehandler.bin">
+      <Filter>Sys</Filter>
+    </None>
+    <None Include="Sys\totaldb.dsy">
+      <Filter>Sys</Filter>
     </None>
     <None Include="Sys\GameSettings\D43E01.ini">
       <Filter>Sys\GameSettings</Filter>
@@ -4892,8 +4924,39 @@
     <None Include="Sys\GameSettings\XIV.ini">
       <Filter>Sys\GameSettings</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Sys\GameSettings\0000000100000002.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\C.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\GameSettings\D43.ini">
+      <Filter>Sys\GameSettings</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\mbox\wc24recv.ctl">
+      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\mbox\wc24recv.mbx">
+      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\mbox\wc24send.ctl">
+      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\mbox\wc24send.mbx">
+      <Filter>Sys\Wii\shared2\wc24\mbox</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24msg.cfg">
+      <Filter>Sys\Wii\shared2\wc24</Filter>
+    </None>
+    <None Include="Sys\Wii\shared2\wc24\nwc24msg.cbk">
+      <Filter>Sys\Wii\shared2\wc24</Filter>
+    </None>
+    <None Include="Sys\Profiles\Wiimote\Classic.ini">
+      <Filter>Sys\Profiles\Wiimote</Filter>
+    </None>
+    <None Include="Sys\Profiles\Wiimote\Sideways.ini">
+      <Filter>Sys\Profiles\Wiimote</Filter>
+    </None>
     <Text Include="Sys\FrontendThemes\Flipper\carousel_background_all.png">
       <Filter>Sys\FrontendThemes\Flipper</Filter>
     </Text>
@@ -4936,6 +4999,8 @@
     <Text Include="Sys\FrontendThemes\Flipper\menu_background.png">
       <Filter>Sys\FrontendThemes\Flipper</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
     <Text Include="Sys\wiitdb-de.txt">
       <Filter>Sys</Filter>
     </Text>
@@ -4986,5 +5051,9 @@
     <Font Include="Sys\Resources\Roboto-Regular.ttf">
       <Filter>Sys\Resources</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Sys\Resources\NotoSansJP-Regular.ttf" />
+    <Font Include="Sys\Resources\Roboto-Regular.ttf" />
   </ItemGroup>
 </Project>

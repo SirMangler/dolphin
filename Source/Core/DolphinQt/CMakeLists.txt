@@ -12,6 +12,7 @@ if (MSVC)
 endif()
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Svg)
 message(STATUS "Found Qt version ${Qt6_VERSION}")
@@ -27,6 +28,10 @@ add_executable(dolphin-emu
   CheatSearchWidget.h
   CheatsManager.cpp
   CheatsManager.h
+  Achievements/AchievementHeaderWidget.cpp
+  Achievements/AchievementHeaderWidget.h
+  Achievements/AchievementProgressWidget.cpp
+  Achievements/AchievementProgressWidget.h
   Achievements/AchievementSettingsWidget.cpp
   Achievements/AchievementSettingsWidget.h
   Achievements/AchievementsWindow.cpp
@@ -47,6 +52,8 @@ add_executable(dolphin-emu
   Config/ConfigControls/ConfigInteger.h
   Config/ConfigControls/ConfigRadio.cpp
   Config/ConfigControls/ConfigRadio.h
+  Config/ConfigControls/ConfigFloatSlider.cpp
+  Config/ConfigControls/ConfigFloatSlider.h
   Config/ConfigControls/ConfigSlider.cpp
   Config/ConfigControls/ConfigSlider.h
   Config/ControllerInterface/ControllerInterfaceWindow.cpp
@@ -85,6 +92,8 @@ add_executable(dolphin-emu
   Config/Graphics/GraphicsWindow.h
   Config/Graphics/HacksWidget.cpp
   Config/Graphics/HacksWidget.h
+  Config/Graphics/ColorCorrectionConfigWindow.cpp
+  Config/Graphics/ColorCorrectionConfigWindow.h
   Config/Graphics/PostProcessingConfigWindow.cpp
   Config/Graphics/PostProcessingConfigWindow.h
   Config/GraphicsModListWidget.cpp
@@ -172,6 +181,8 @@ add_executable(dolphin-emu
   Config/ToolTipControls/ToolTipCheckBox.h
   Config/ToolTipControls/ToolTipComboBox.cpp
   Config/ToolTipControls/ToolTipComboBox.h
+  Config/ToolTipControls/ToolTipPushButton.cpp
+  Config/ToolTipControls/ToolTipPushButton.h
   Config/ToolTipControls/ToolTipRadioButton.cpp
   Config/ToolTipControls/ToolTipRadioButton.h
   Config/ToolTipControls/ToolTipSlider.cpp
@@ -276,8 +287,6 @@ add_executable(dolphin-emu
   QtUtils/ElidedButton.h
   QtUtils/FileOpenEventFilter.cpp
   QtUtils/FileOpenEventFilter.h
-  QtUtils/FlowLayout.cpp
-  QtUtils/FlowLayout.h
   QtUtils/ImageConverter.cpp
   QtUtils/ImageConverter.h
   QtUtils/ModalMessageBox.cpp
@@ -287,6 +296,8 @@ add_executable(dolphin-emu
   QtUtils/ParallelProgressDialog.h
   QtUtils/PartiallyClosableTabWidget.cpp
   QtUtils/PartiallyClosableTabWidget.h
+  QtUtils/SetWindowDecorations.cpp
+  QtUtils/SetWindowDecorations.h
   QtUtils/SignalBlocking.h
   QtUtils/UTF8CodePointCountValidator.cpp
   QtUtils/UTF8CodePointCountValidator.h
@@ -356,6 +367,12 @@ add_executable(dolphin-emu
   WiiUpdate.h
 )
 
+if (WIN32)
+  target_sources(dolphin-emu PRIVATE
+    Styles/Dark/dark.qrc
+  )
+endif()
+
 if (NOT WIN32)
   target_sources(dolphin-emu PRIVATE
     QtUtils/SignalDaemon.cpp
@@ -390,6 +407,7 @@ if (WIN32)
   PRIVATE
     gdi32.lib
     shell32.lib
+    dwmapi.lib # Needed to set window decorations for dark theme
   )
 endif()
 

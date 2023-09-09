@@ -131,7 +131,6 @@ void ImGuiNetPlay::DrawLobbyWindow()
         g_netplay_client = nullptr;
         g_netplay_server = nullptr;
       }
-
       if (m_prompt_warning)
       {
         m_prompt_warning = false;
@@ -149,6 +148,24 @@ void ImGuiNetPlay::DrawLobbyWindow()
 
         ImGui::EndPopup();
       }
+    }
+
+    if (m_prompt_warning)
+    {
+      m_prompt_warning = false;
+      ImGui::OpenPopup("Warning");
+    }
+
+    if (ImGui::BeginPopupModal("Warning"))
+    {
+      ImGui::Text(m_warning_text.c_str());
+      ImGui::Separator();
+      if (ImGui::Button("OK"))
+      {
+        ImGui::CloseCurrentPopup();
+      }
+
+      ImGui::EndPopup();
     }
 
     ImGui::Dummy(ImVec2(0.0f, 25.0f));

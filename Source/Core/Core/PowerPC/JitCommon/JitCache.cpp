@@ -42,7 +42,15 @@ void JitBaseBlockCache::Init()
 {
   Common::JitRegister::Init(Config::Get(Config::MAIN_PERF_MAP_DIR));
 
-  m_block_map_arena.GrabSHMSegment(FAST_BLOCK_MAP_SIZE, "dolphin-emu-jitblock");
+#ifdef _ARCH_64
+  m_fast_block_map = reinterpret_cast<JitBlock**>(m_block_map_arena.Create(FAST_BLOCK_MAP_SIZE));
+#else
+  m_fast_block_map = nullptr;
+#endif
+  if (m_fast_block_map)
+    m_fast_block_map_ptr = m_fast_block_map;
+  else
+    m_fast_block_map_ptr = m_fast_block_map_fallback.data();
 
   Clear();
 }
@@ -51,12 +59,7 @@ void JitBaseBlockCache::Shutdown()
 {
   Common::JitRegister::Shutdown();
 
-  if (m_fast_block_map)
-  {
-    m_block_map_arena.ReleaseView(m_fast_block_map, FAST_BLOCK_MAP_SIZE);
-  }
-
-  m_block_map_arena.ReleaseSHMSegment();
+  m_block_map_arena.Release();
 }
 
 // This clears the JIT cache. It's called from JitCache.cpp when the JIT cache
@@ -80,23 +83,7 @@ void JitBaseBlockCache::Clear()
   valid_block.ClearAll();
 
   if (m_fast_block_map)
-  {
-    m_block_map_arena.ReleaseView(m_fast_block_map, FAST_BLOCK_MAP_SIZE);
-    m_block_map_arena.ReleaseSHMSegment();
-    m_block_map_arena.GrabSHMSegment(FAST_BLOCK_MAP_SIZE, "dolphin-emu-jitblock");
-  }
-
-  m_fast_block_map =
-      reinterpret_cast<JitBlock**>(m_block_map_arena.CreateView(0, FAST_BLOCK_MAP_SIZE));
-
-  if (m_fast_block_map)
-  {
-    m_fast_block_map_ptr = m_fast_block_map;
-  }
-  else
-  {
-    m_fast_block_map_ptr = m_fast_block_map_fallback.data();
-  }
+    m_block_map_arena.Clear();
 }
 
 void JitBaseBlockCache::Reset()
@@ -163,12 +150,12 @@ void JitBaseBlockCache::FinalizeBlock(JitBlock& block, bool block_link,
   if (Common::JitRegister::IsEnabled() &&
       (symbol = g_symbolDB.GetSymbolFromAddr(block.effectiveAddress)) != nullptr)
   {
-    Common::JitRegister::Register(block.checkedEntry, block.codeSize, "JIT_PPC_{}_{:08x}",
+    Common::JitRegister::Register(block.normalEntry, block.codeSize, "JIT_PPC_{}_{:08x}",
                                   symbol->function_name.c_str(), block.physicalAddress);
   }
   else
   {
-    Common::JitRegister::Register(block.checkedEntry, block.codeSize, "JIT_PPC_{:08x}",
+    Common::JitRegister::Register(block.normalEntry, block.codeSize, "JIT_PPC_{:08x}",
                                   block.physicalAddress);
   }
 }

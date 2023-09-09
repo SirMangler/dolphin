@@ -30,9 +30,6 @@ struct JitBlockData
   u8* far_begin;
   u8* far_end;
 
-  // A special entry point for block linking; usually used to check the
-  // downcount.
-  u8* checkedEntry;
   // The normal entry point for the block, returned by Dispatch().
   u8* normalEntry;
 
@@ -73,6 +70,9 @@ struct JitBlock : public JitBlockData
   struct LinkData
   {
     u8* exitPtrs;  // to be able to rewrite the exit jump
+#ifdef _M_ARM_64
+    const u8* exitFarcode;
+#endif
     u32 exitAddress;
     bool linkStatus;  // is it already linked?
     bool call;
@@ -212,7 +212,7 @@ private:
   // This is used as a fast cache of block_map used in the assembly dispatcher.
   // It is implemented via a shm segment using m_block_map_arena.
   JitBlock** m_fast_block_map = 0;
-  Common::MemArena m_block_map_arena;
+  Common::LazyMemoryRegion m_block_map_arena;
 
   // An alternative for the above fast_block_map but without a shm segment
   // in case the shm memory region couldn't be allocated.

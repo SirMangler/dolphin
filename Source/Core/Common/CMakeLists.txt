@@ -29,6 +29,8 @@ add_library(common
   Crypto/bn.h
   Crypto/ec.cpp
   Crypto/ec.h
+  Crypto/HMAC.cpp
+  Crypto/HMAC.h
   Crypto/SHA1.cpp
   Crypto/SHA1.h
   Debug/MemoryPatches.cpp
@@ -36,13 +38,13 @@ add_library(common
   Debug/Threads.h
   Debug/Watches.cpp
   Debug/Watches.h
-  DebugInterface.h
   DynamicLibrary.cpp
   DynamicLibrary.h
   ENet.cpp
   ENet.h
   EnumFormatter.h
   EnumMap.h
+  EnumUtils.h
   Event.h
   FatFsUtil.cpp
   FatFsUtil.h
@@ -110,6 +112,7 @@ add_library(common
   SettingsHandler.h
   SFMLHelper.cpp
   SFMLHelper.h
+  SmallVector.h
   SocketContext.cpp
   SocketContext.h
   SPSCQueue.h
@@ -135,6 +138,8 @@ add_library(common
   WorkQueueThread.h
 )
 
+add_dependencies(common dolphin_scmrev)
+
 if(NOT MSVC AND _M_ARM_64)
   set_source_files_properties(
     Crypto/AES.cpp
@@ -145,16 +150,17 @@ endif()
 target_link_libraries(common
 PUBLIC
   ${CMAKE_THREAD_LIBS_INIT}
-  enet
+  enet::enet
   fmt::fmt
-  ${MBEDTLS_LIBRARIES}
-  minizip-ng
+  MbedTLS::mbedtls
+  minizip::minizip
+  sfml-network
 
 PRIVATE
-  ${CURL_LIBRARIES}
+  CURL::libcurl
   FatFs
   Iconv::Iconv
-  ${spng_target}
+  spng::spng
   ${VTUNE_LIBRARIES}
 )
 

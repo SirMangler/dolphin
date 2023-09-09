@@ -287,7 +287,7 @@ void VideoBackendBase::ActivateBackend(const std::string& name)
   g_video_backend = iter->get();
 }
 
-void VideoBackendBase::PopulateBackendInfo()
+void VideoBackendBase::PopulateBackendInfo(const WindowSystemInfo& wsi)
 {
   g_Config.Refresh();
   // Reset backend_info so if the backend forgets to initialize something it doesn't end up using
@@ -295,18 +295,18 @@ void VideoBackendBase::PopulateBackendInfo()
   g_Config.backend_info = {};
   ActivateBackend(Config::Get(Config::MAIN_GFX_BACKEND));
   g_Config.backend_info.DisplayName = g_video_backend->GetDisplayName();
-  g_video_backend->InitBackendInfo();
+  g_video_backend->InitBackendInfo(wsi);
   // We validate the config after initializing the backend info, as system-specific settings
   // such as anti-aliasing, or the selected adapter may be invalid, and should be checked.
   g_Config.VerifyValidity();
 }
 
-void VideoBackendBase::PopulateBackendInfoFromUI()
+void VideoBackendBase::PopulateBackendInfoFromUI(const WindowSystemInfo& wsi)
 {
   // If the core is running, the backend info will have been populated already.
   // If we did it here, the UI thread can race with the with the GPU thread.
   if (!Core::IsRunning())
-    PopulateBackendInfo();
+    PopulateBackendInfo(wsi);
 }
 
 void VideoBackendBase::DoState(PointerWrap& p)
@@ -415,6 +415,7 @@ void VideoBackendBase::ShutdownShared()
 
   g_bounding_box.reset();
   g_perf_query.reset();
+  g_graphics_mod_manager.reset();
   g_texture_cache.reset();
   g_framebuffer_manager.reset();
   g_shader_cache.reset();

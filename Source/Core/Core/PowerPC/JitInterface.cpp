@@ -98,6 +98,25 @@ void JitInterface::SetProfilingState(ProfilingState state)
   m_jit->jo.profile_blocks = state == ProfilingState::Enabled;
 }
 
+void JitInterface::UpdateMembase()
+{
+  if (!m_jit)
+    return;
+
+  auto& ppc_state = m_system.GetPPCState();
+  auto& memory = m_system.GetMemory();
+  if (ppc_state.msr.DR)
+  {
+    ppc_state.mem_ptr =
+        m_jit->jo.fastmem_arena ? memory.GetLogicalBase() : memory.GetLogicalPageMappingsBase();
+  }
+  else
+  {
+    ppc_state.mem_ptr =
+        m_jit->jo.fastmem_arena ? memory.GetPhysicalBase() : memory.GetPhysicalPageMappingsBase();
+  }
+}
+
 void JitInterface::WriteProfileResults(const std::string& filename) const
 {
   Profiler::ProfileStats prof_stats;
@@ -187,7 +206,7 @@ JitInterface::GetHostCode(u32 address) const
   }
 
   GetHostCodeResult result;
-  result.code = block->checkedEntry;
+  result.code = block->normalEntry;
   result.code_size = block->codeSize;
   result.entry_address = block->effectiveAddress;
   return result;

@@ -26,6 +26,7 @@
 #include "Core/System.h"
 
 #include "DolphinQt/QtUtils/DolphinFileDialog.h"
+#include "DolphinQt/QtUtils/SetWindowDecorations.h"
 #include "DolphinQt/Settings.h"
 
 // Qt is not guaranteed to keep track of file paths using native file pickers, so we use this
@@ -149,6 +150,7 @@ void InfinityBaseWindow::LoadFigure(u8 slot)
 void InfinityBaseWindow::CreateFigure(u8 slot)
 {
   CreateFigureDialog create_dlg(this, slot);
+  SetQWidgetWindowDecorations(&create_dlg);
   if (create_dlg.exec() == CreateFigureDialog::Accepted)
   {
     LoadFigurePath(slot, create_dlg.GetFilePath());
@@ -193,7 +195,7 @@ CreateFigureDialog::CreateFigureDialog(QWidget* parent, u8 slot) : QDialog(paren
   auto* combo_figlist = new QComboBox();
   QStringList filterlist;
   u32 first_entry = 0;
-  for (const auto& entry : Core::System::GetInstance().GetInfinityBase().GetFigureList())
+  for (const auto& entry : IOS::HLE::USB::InfinityBase::GetFigureList())
   {
     const auto figure = entry.second;
     // Only display entry if it is a piece appropriate for the slot

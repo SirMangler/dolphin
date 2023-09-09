@@ -15,12 +15,16 @@
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-	<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-	<WindowsTargetPlatformMinVersion>10.0.22621.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.17134.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '14.0'">v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -115,6 +119,12 @@
     <None Include="DolphinWinRT_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
+    <Text Include="readme.txt">
+      <DeploymentContent>false</DeploymentContent>
+    </Text>
+    <None Include="Sys\codehandler.bin">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Sys\GameSettings\0000000100000002.ini">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -4881,6 +4891,8 @@
     </None>
     <None Include="Sys\Profiles\Wiimote\Wii Remote with MotionPlus Pointing.ini">
       <DeploymentContent>true</DeploymentContent>
+    <None Include="Sys\totaldb.dsy">
+      <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Sys\Wii\shared2\wc24\mbox\wc24recv.ctl">
       <DeploymentContent>true</DeploymentContent>
@@ -4955,6 +4967,9 @@
       <DeploymentContent>true</DeploymentContent>
     </Text>
     <Text Include="Sys\wiitdb-zh_TW.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="Sys\Wii\shared2\wc24\mbox\Readme.txt">
       <DeploymentContent>true</DeploymentContent>
     </Text>
     <Text Include="Sys\FrontendThemes\Default\carousel_background_all.png">

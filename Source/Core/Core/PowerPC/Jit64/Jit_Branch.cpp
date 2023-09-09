@@ -12,6 +12,7 @@
 #include "Core/PowerPC/Jit64Common/Jit64PowerPCState.h"
 #include "Core/PowerPC/PPCAnalyst.h"
 #include "Core/PowerPC/PowerPC.h"
+#include "Core/System.h"
 
 // The branches are known good, or at least reasonably good.
 // No need for a disable-mechanism.
@@ -54,6 +55,9 @@ void Jit64::rfi(UGeckoInstruction inst)
   MOV(32, R(RSCRATCH), PPCSTATE_SRR1);
   AND(32, R(RSCRATCH), Imm32(mask & clearMSR13));
   OR(32, PPCSTATE(msr), R(RSCRATCH));
+
+  EmitStoreMembase(R(RSCRATCH), RSCRATCH2);
+
   // NPC = SRR0;
   MOV(32, R(RSCRATCH), PPCSTATE_SRR0);
   WriteRfiExitDestInRSCRATCH();
@@ -116,9 +120,9 @@ void Jit64::bcx(UGeckoInstruction inst)
   {
     SUB(32, PPCSTATE_CTR, Imm8(1));
     if (inst.BO & BO_BRANCH_IF_CTR_0)
-      pCTRDontBranch = J_CC(CC_NZ, true);
+      pCTRDontBranch = J_CC(CC_NZ, Jump::Near);
     else
-      pCTRDontBranch = J_CC(CC_Z, true);
+      pCTRDontBranch = J_CC(CC_Z, Jump::Near);
   }
 
   FixupBranch pConditionDontBranch;
@@ -243,9 +247,9 @@ void Jit64::bclrx(UGeckoInstruction inst)
   {
     SUB(32, PPCSTATE_CTR, Imm8(1));
     if (inst.BO & BO_BRANCH_IF_CTR_0)
-      pCTRDontBranch = J_CC(CC_NZ, true);
+      pCTRDontBranch = J_CC(CC_NZ, Jump::Near);
     else
-      pCTRDontBranch = J_CC(CC_Z, true);
+      pCTRDontBranch = J_CC(CC_Z, Jump::Near);
   }
 
   FixupBranch pConditionDontBranch;

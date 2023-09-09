@@ -16,6 +16,7 @@
 #include "DolphinQt/Config/Mapping/MappingIndicator.h"
 #include "DolphinQt/Config/Mapping/MappingNumeric.h"
 #include "DolphinQt/Config/Mapping/MappingWindow.h"
+#include "DolphinQt/QtUtils/SetWindowDecorations.h"
 
 #include "InputCommon/ControlReference/ControlReference.h"
 #include "InputCommon/ControllerEmu/Control/Control.h"
@@ -248,6 +249,7 @@ void MappingWidget::ShowAdvancedControlGroupDialog(ControllerEmu::ControlGroup* 
   // Enable "Close" button functionality.
   connect(button_box, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
 
+  SetQWidgetWindowDecorations(&dialog);
   dialog.exec();
 }
 
@@ -281,7 +283,7 @@ void MappingWidget::CreateControl(const ControllerEmu::Control* control, QFormLa
 
   button->setMinimumWidth(100);
   button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  const bool translate = control->translate == ControllerEmu::Translate;
+  const bool translate = control->translate == ControllerEmu::Translatability::Translate;
   const QString translated_name =
       translate ? tr(control->ui_name.c_str()) : QString::fromStdString(control->ui_name);
   layout->addRow(translated_name, button);
@@ -303,6 +305,7 @@ MappingWidget::CreateSettingAdvancedMappingButton(ControllerEmu::NumericSettingB
       setting.SetExpressionFromValue();
 
     IOWindow io(this, GetController(), &setting.GetInputReference(), IOWindow::Type::Input);
+    SetQWidgetWindowDecorations(&io);
     io.exec();
 
     setting.SimplifyIfPossible();

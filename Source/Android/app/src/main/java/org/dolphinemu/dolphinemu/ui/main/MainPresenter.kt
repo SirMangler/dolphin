@@ -123,7 +123,7 @@ class MainPresenter(private val mainView: MainView, private val activity: Fragme
 
     fun onResume() {
         if (dirToAdd != null) {
-            GameFileCache.addGameFolder(dirToAdd)
+            GameFileCache.addGameFolder(dirToAdd!!)
             dirToAdd = null
         }
 
@@ -286,6 +286,7 @@ class MainPresenter(private val mainView: MainView, private val activity: Fragme
         const val REQUEST_WAD_FILE = 4
         const val REQUEST_WII_SAVE_FILE = 5
         const val REQUEST_NAND_BIN_FILE = 6
+        const val REQUEST_GPU_DRIVER = 7
 
         private var shouldRescanLibrary = true
 

@@ -11,6 +11,8 @@
 namespace VideoCommon
 {
 class CustomTextureData;
+struct MaterialData;
+struct PixelShaderData;
 
 // This class provides functionality to load
 // specific data (like textures).  Where this data
@@ -18,22 +20,15 @@ class CustomTextureData;
 class CustomAssetLibrary
 {
 public:
-  // TODO: this should be std::chrono::system_clock::time_point to
-  // support any type of loader where the time isn't from the filesystem
-  // but there's no way to convert filesystem times to system times
-  // without 'clock_cast', once our builders catch up
-  // to support 'clock_cast' we should update this
-  // For now, it's fine as a filesystem library is all that is
-  // available
-  using TimeType = std::filesystem::file_time_type;
+  using TimeType = std::chrono::system_clock::time_point;
 
   // The AssetID is a unique identifier for a particular asset
   using AssetID = std::string;
 
   struct LoadInfo
   {
-    std::size_t m_bytes_loaded;
-    CustomAssetLibrary::TimeType m_load_time;
+    std::size_t m_bytes_loaded = 0;
+    CustomAssetLibrary::TimeType m_load_time = {};
   };
 
   // Loads a texture, if there are no levels, bytes loaded will be empty
@@ -45,5 +40,11 @@ public:
   // Loads a texture as a game texture, providing additional checks like confirming
   // each mip level size is correct and that the format is consistent across the data
   LoadInfo LoadGameTexture(const AssetID& asset_id, CustomTextureData* data);
+
+  // Loads a pixel shader
+  virtual LoadInfo LoadPixelShader(const AssetID& asset_id, PixelShaderData* data) = 0;
+
+  // Loads a material
+  virtual LoadInfo LoadMaterial(const AssetID& asset_id, MaterialData* data) = 0;
 };
 }  // namespace VideoCommon

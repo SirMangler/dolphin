@@ -3,7 +3,7 @@
   <Identity
     Name="3143e227-cbe5-41c4-aaa9-cf40132a1b22"
     Publisher="CN=SirMangler"
-    Version="1.1.6.0" />
+    Version="1.1.7.0" />
   <mp:PhoneIdentity PhoneProductId="3143e227-cbe5-41c4-aaa9-cf40132a1b22" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
     <DisplayName>Dolphin Emulator</DisplayName>

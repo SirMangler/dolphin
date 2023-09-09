@@ -21,6 +21,7 @@
 #include "Common/Align.h"
 #include "Common/Assert.h"
 #include "Common/CommonTypes.h"
+#include "Common/EnumUtils.h"
 #include "Common/FileUtil.h"
 #include "Common/HttpRequest.h"
 #include "Common/Logging/Log.h"
@@ -76,7 +77,7 @@ static bool ImportWAD(IOS::HLE::Kernel& ios, const DiscIO::VolumeWAD& wad,
     if (ret != IOS::HLE::IOSC_FAIL_CHECKVALUE)
     {
       PanicAlertFmtT("WAD installation failed: Could not initialise title import (error {0}).",
-                     static_cast<u32>(ret));
+                     Common::ToUnderlying(ret));
     }
     return false;
   }
@@ -548,7 +549,7 @@ UpdateResult OnlineSystemUpdater::InstallTitleFromNUS(const std::string& prefix_
   auto& es = m_ios.GetESCore();
   if ((ret = es.ImportTicket(ticket.first, ticket.second)) < 0)
   {
-    ERROR_LOG_FMT(CORE, "Failed to import ticket: error {}", static_cast<u32>(ret));
+    ERROR_LOG_FMT(CORE, "Failed to import ticket: error {}", Common::ToUnderlying(ret));
     return UpdateResult::ImportFailed;
   }
 
@@ -580,7 +581,7 @@ UpdateResult OnlineSystemUpdater::InstallTitleFromNUS(const std::string& prefix_
   IOS::HLE::ESCore::Context context;
   if ((ret = es.ImportTitleInit(context, tmd.first.GetBytes(), tmd.second)) < 0)
   {
-    ERROR_LOG_FMT(CORE, "Failed to initialise title import: error {}", static_cast<u32>(ret));
+    ERROR_LOG_FMT(CORE, "Failed to initialise title import: error {}", Common::ToUnderlying(ret));
     return UpdateResult::ImportFailed;
   }
 
@@ -601,7 +602,7 @@ UpdateResult OnlineSystemUpdater::InstallTitleFromNUS(const std::string& prefix_
       if ((ret = es.ImportContentBegin(context, title.id, content.id)) < 0)
       {
         ERROR_LOG_FMT(CORE, "Failed to initialise import for content {:08x}: error {}", content.id,
-                      static_cast<u32>(ret));
+                      Common::ToUnderlying(ret));
         return UpdateResult::ImportFailed;
       }
 
@@ -626,7 +627,7 @@ UpdateResult OnlineSystemUpdater::InstallTitleFromNUS(const std::string& prefix_
   if ((all_contents_imported && (ret = es.ImportTitleDone(context)) < 0) ||
       (!all_contents_imported && (ret = es.ImportTitleCancel(context)) < 0))
   {
-    ERROR_LOG_FMT(CORE, "Failed to finalise title import: error {}", static_cast<u32>(ret));
+    ERROR_LOG_FMT(CORE, "Failed to finalise title import: error {}", Common::ToUnderlying(ret));
     return UpdateResult::ImportFailed;
   }
 
@@ -870,7 +871,7 @@ static NANDCheckResult CheckNAND(IOS::HLE::Kernel& ios, bool repair)
 
   // Check for NANDs that were used with old Dolphin versions.
   const std::string sys_replace_path =
-      Common::RootUserPath(Common::FROM_CONFIGURED_ROOT) + "/sys/replace";
+      Common::RootUserPath(Common::FromWhichRoot::Configured) + "/sys/replace";
   if (File::Exists(sys_replace_path))
   {
     ERROR_LOG_FMT(CORE,
@@ -882,7 +883,7 @@ static NANDCheckResult CheckNAND(IOS::HLE::Kernel& ios, bool repair)
   }
 
   // Clean up after a bug fixed in https://github.com/dolphin-emu/dolphin/pull/8802
-  const std::string rfl_db_path = Common::GetMiiDatabasePath(Common::FROM_CONFIGURED_ROOT);
+  const std::string rfl_db_path = Common::GetMiiDatabasePath(Common::FromWhichRoot::Configured);
   const File::FileInfo rfl_db(rfl_db_path);
   if (rfl_db.Exists() && rfl_db.GetSize() == 0)
   {
@@ -895,7 +896,7 @@ static NANDCheckResult CheckNAND(IOS::HLE::Kernel& ios, bool repair)
 
   for (const u64 title_id : es.GetInstalledTitles())
   {
-    const std::string title_dir = Common::GetTitlePath(title_id, Common::FROM_CONFIGURED_ROOT);
+    const std::string title_dir = Common::GetTitlePath(title_id, Common::FromWhichRoot::Configured);
     const std::string content_dir = title_dir + "/content";
     const std::string data_dir = title_dir + "/data";
 
@@ -959,6 +960,34 @@ static NANDCheckResult CheckNAND(IOS::HLE::Kernel& ios, bool repair)
         result.bad = true;
     }
   }
+
+  // Get some storage stats.
+  const auto fs = ios.GetFS();
+  const auto root_stats = fs->GetExtendedDirectoryStats("/");
+
+  // The Wii System Menu's save/channel management only considers a specific subset of the Wii NAND
+  // user-accessible and will only use those folders when calculating the amount of free blocks it
+  // displays. This can have weird side-effects where the other parts of the NAND contain more data
+  // than reserved and it will display free blocks even though there isn't any space left. To avoid
+  // confusion, report the 'user' and 'system' data separately to the user.
+  u64 used_clusters_user = 0;
+  u64 used_inodes_user = 0;
+  for (std::string user_path : {"/meta", "/ticket", "/title/00010000", "/title/00010001",
+                                "/title/00010003", "/title/00010004", "/title/00010005",
+                                "/title/00010006", "/title/00010007", "/shared2/title"})
+  {
+    const auto dir_stats = fs->GetExtendedDirectoryStats(user_path);
+    if (dir_stats)
+    {
+      used_clusters_user += dir_stats->used_clusters;
+      used_inodes_user += dir_stats->used_inodes;
+    }
+  }
+
+  result.used_clusters_user = used_clusters_user;
+  result.used_clusters_system = root_stats ? (root_stats->used_clusters - used_clusters_user) : 0;
+  result.used_inodes_user = used_inodes_user;
+  result.used_inodes_system = root_stats ? (root_stats->used_inodes - used_inodes_user) : 0;
 
   return result;
 }

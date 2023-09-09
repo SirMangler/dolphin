@@ -62,6 +62,12 @@ enum class StringSetting(
         Settings.SECTION_GFX_ENHANCEMENTS,
         "PostProcessingShader",
         ""
+    ),
+    GFX_DRIVER_LIB_NAME(
+        Settings.FILE_GFX,
+        Settings.SECTION_GFX_SETTINGS,
+        "DriverLibName",
+        ""
     );
 
     override val isOverridden: Boolean
@@ -88,7 +94,7 @@ enum class StringSetting(
         NativeConfig.setString(settings.writeLayer, file, section, key, newValue)
     }
 
-    fun setString(layer: Int, newValue: String?) {
+    fun setString(layer: Int, newValue: String) {
         NativeConfig.setString(layer, file, section, key, newValue)
     }
 

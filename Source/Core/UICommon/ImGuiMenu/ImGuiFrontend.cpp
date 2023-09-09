@@ -115,13 +115,13 @@ ImGuiFrontend::ImGuiFrontend()
 #endif
 
   // Manually reactivate the video backend in case a GameINI overrides the video backend setting.
-  VideoBackendBase::PopulateBackendInfo();
+  VideoBackendBase::PopulateBackendInfo(wsi);
 
   // Issue any API calls which must occur on the main thread for the graphics backend.
   WindowSystemInfo prepared_wsi(wsi);
   g_video_backend->PrepareWindow(prepared_wsi);
 
-  VideoBackendBase::PopulateBackendInfo();
+  VideoBackendBase::PopulateBackendInfo(wsi);
   if (!g_video_backend->Initialize(wsi))
   {
     PanicAlertFmt("Failed to initialize video backend!");
@@ -1577,7 +1577,7 @@ std::shared_ptr<UICommon::GameFile> ImGuiFrontend::CreateGameList()
         m_list_search_results.clear();
         for (auto& game : m_games)
         {
-            auto& name = game->GetLongName();
+            auto& name = game->GetName(m_title_database);
             auto it = std::search(name.begin(), name.end(), search_phrase.begin(),
                                   search_phrase.end(), [](unsigned char ch1, unsigned char ch2) {
                                     return std::toupper(ch1) == std::toupper(ch2);
@@ -1601,7 +1601,8 @@ std::shared_ptr<UICommon::GameFile> ImGuiFrontend::CreateGameList()
 
     for (auto& game : games)
     {
-      if (ImGui::Selectable(std::format("{}##{}", game->GetLongName(), game->GetFilePath()).c_str()))
+      if (ImGui::Selectable(std::format("{}##{}", game->GetName(m_title_database).c_str(),
+                                                  game->GetFilePath()).c_str()))
       {
         ImGui::EndListBox();
         return game;

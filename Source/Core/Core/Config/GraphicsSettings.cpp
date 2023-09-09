@@ -23,6 +23,14 @@ const Info<bool> GFX_WIDESCREEN_HACK{{System::GFX, "Settings", "wideScreenHack"}
 const Info<AspectMode> GFX_ASPECT_RATIO{{System::GFX, "Settings", "AspectRatio"}, AspectMode::Auto};
 const Info<AspectMode> GFX_SUGGESTED_ASPECT_RATIO{{System::GFX, "Settings", "SuggestedAspectRatio"},
                                                   AspectMode::Auto};
+const Info<u32> GFX_WIDESCREEN_HEURISTIC_TRANSITION_THRESHOLD{
+    {System::GFX, "Settings", "WidescreenHeuristicTransitionThreshold"}, 3};
+const Info<float> GFX_WIDESCREEN_HEURISTIC_ASPECT_RATIO_SLOP{
+    {System::GFX, "Settings", "WidescreenHeuristicAspectRatioSlop"}, 0.11f};
+const Info<float> GFX_WIDESCREEN_HEURISTIC_STANDARD_RATIO{
+    {System::GFX, "Settings", "WidescreenHeuristicStandardRatio"}, 1.f};
+const Info<float> GFX_WIDESCREEN_HEURISTIC_WIDESCREEN_RATIO{
+    {System::GFX, "Settings", "WidescreenHeuristicWidescreenRatio"}, (16 / 9.f) / (4 / 3.f)};
 const Info<bool> GFX_CROP{{System::GFX, "Settings", "Crop"}, false};
 const Info<int> GFX_SAFE_TEXTURE_CACHE_COLOR_SAMPLES{
     {System::GFX, "Settings", "SafeTextureCacheColorSamples"}, 128};
@@ -111,11 +119,15 @@ const Info<bool> GFX_PREFER_GLES{{System::GFX, "Settings", "PreferGLES"}, false}
 
 const Info<bool> GFX_MODS_ENABLE{{System::GFX, "Settings", "EnableMods"}, true};
 
+const Info<std::string> GFX_DRIVER_LIB_NAME{{System::GFX, "Settings", "DriverLibName"}, ""};
+
 // Graphics.Enhancements
 
 const Info<TextureFilteringMode> GFX_ENHANCE_FORCE_TEXTURE_FILTERING{
     {System::GFX, "Enhancements", "ForceTextureFiltering"}, TextureFilteringMode::Default};
 const Info<int> GFX_ENHANCE_MAX_ANISOTROPY{{System::GFX, "Enhancements", "MaxAnisotropy"}, 0};
+const Info<OutputResamplingMode> GFX_ENHANCE_OUTPUT_RESAMPLING{
+    {System::GFX, "Enhancements", "OutputResampling"}, OutputResamplingMode::Default};
 const Info<std::string> GFX_ENHANCE_POST_SHADER{
     {System::GFX, "Enhancements", "PostProcessingShader"}, ""};
 const Info<bool> GFX_ENHANCE_FORCE_TRUE_COLOR{{System::GFX, "Enhancements", "ForceTrueColor"},
@@ -126,6 +138,22 @@ const Info<bool> GFX_ENHANCE_ARBITRARY_MIPMAP_DETECTION{
     {System::GFX, "Enhancements", "ArbitraryMipmapDetection"}, true};
 const Info<float> GFX_ENHANCE_ARBITRARY_MIPMAP_DETECTION_THRESHOLD{
     {System::GFX, "Enhancements", "ArbitraryMipmapDetectionThreshold"}, 14.0f};
+const Info<bool> GFX_ENHANCE_HDR_OUTPUT{{System::GFX, "Enhancements", "HDROutput"}, false};
+
+// Color.Correction
+
+const Info<bool> GFX_CC_CORRECT_COLOR_SPACE{{System::GFX, "ColorCorrection", "CorrectColorSpace"},
+                                            false};
+const Info<ColorCorrectionRegion> GFX_CC_GAME_COLOR_SPACE{
+    {System::GFX, "ColorCorrection", "GameColorSpace"}, ColorCorrectionRegion::SMPTE_NTSCM};
+const Info<bool> GFX_CC_CORRECT_GAMMA{{System::GFX, "ColorCorrection", "CorrectGamma"}, false};
+const Info<float> GFX_CC_GAME_GAMMA{{System::GFX, "ColorCorrection", "GameGamma"}, 2.35f};
+const Info<bool> GFX_CC_SDR_DISPLAY_GAMMA_SRGB{
+    {System::GFX, "ColorCorrection", "SDRDisplayGammaSRGB"}, true};
+const Info<float> GFX_CC_SDR_DISPLAY_CUSTOM_GAMMA{
+    {System::GFX, "ColorCorrection", "SDRDisplayCustomGamma"}, 2.2f};
+const Info<float> GFX_CC_HDR_PAPER_WHITE_NITS{{System::GFX, "ColorCorrection", "HDRPaperWhiteNits"},
+                                              200.f};
 
 // Graphics.Stereoscopy
 
@@ -171,4 +199,5 @@ const Info<bool> GFX_HACK_NO_MIPMAPPING{{System::GFX, "Hacks", "NoMipmapping"}, 
 // Graphics.GameSpecific
 
 const Info<bool> GFX_PERF_QUERIES_ENABLE{{System::GFX, "GameSpecific", "PerfQueriesEnable"}, false};
+
 }  // namespace Config

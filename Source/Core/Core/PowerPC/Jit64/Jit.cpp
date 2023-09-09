@@ -203,7 +203,7 @@ bool Jit64::BackPatch(SContext* ctx)
 
   // Patch the original memory operation.
   XEmitter emitter(start, start + info.len);
-  emitter.JMP(trampoline, true);
+  emitter.JMP(trampoline, Jump::Near);
   // NOPs become dead code
   const u8* end = info.start + info.len;
   for (const u8* i = emitter.GetCodePtr(); i < end; ++i)
@@ -251,6 +251,8 @@ bool Jit64::BackPatch(SContext* ctx)
 
 void Jit64::Init()
 {
+  RefreshConfig();
+
   EnableBlockLink();
 
   auto& memory = m_system.GetMemory();
@@ -258,7 +260,6 @@ void Jit64::Init()
   jo.fastmem_arena = m_fastmem_enabled && memory.InitFastmemArena();
   jo.optimizeGatherPipe = true;
   jo.accurateSinglePrecision = true;
-  UpdateMemoryAndExceptionOptions();
   js.fastmemLoadStore = nullptr;
   js.compilerPC = 0;
 
@@ -306,7 +307,7 @@ void Jit64::ClearCache()
   m_const_pool.Clear();
   ClearCodeSpace();
   Clear();
-  UpdateMemoryAndExceptionOptions();
+  RefreshConfig();
   ResetFreeMemoryRanges();
 }
 
@@ -373,7 +374,7 @@ void Jit64::FallBackToInterpreter(UGeckoInstruction inst)
   else if (ShouldHandleFPExceptionForInstruction(js.op))
   {
     TEST(32, PPCSTATE(Exceptions), Imm32(EXCEPTION_PROGRAM));
-    FixupBranch exception = J_CC(CC_NZ, true);
+    FixupBranch exception = J_CC(CC_NZ, Jump::Near);
 
     SwitchToFarCode();
     SetJumpTarget(exception);
@@ -469,6 +470,7 @@ bool Jit64::Cleanup()
         Imm32(js.downcountAmount));
     MOV(64, MDisp(RSCRATCH2, offsetof(JitBlock::ProfileData, ticCounter)), R(RSCRATCH));
     ABI_PopRegistersAndAdjustStack({}, 0);
+    did_something = true;
   }
 
   return did_something;
@@ -487,6 +489,21 @@ void Jit64::FakeBLCall(u32 after)
   POP(RSCRATCH2);
   JustWriteExit(after, false, 0);
   SetJumpTarget(skip_exit);
+}
+
+void Jit64::EmitUpdateMembase()
+{
+  MOV(64, R(RMEM), PPCSTATE(mem_ptr));
+}
+
+void Jit64::EmitStoreMembase(const OpArg& msr, X64Reg scratch_reg)
+{
+  auto& memory = m_system.GetMemory();
+  MOV(64, R(RMEM), ImmPtr(memory.GetLogicalBase()));
+  MOV(64, R(scratch_reg), ImmPtr(memory.GetPhysicalBase()));
+  TEST(32, msr, Imm32(1 << (31 - 27)));
+  CMOVcc(64, RMEM, R(scratch_reg), CC_Z);
+  MOV(64, PPCSTATE(mem_ptr), R(RMEM));
 }
 
 void Jit64::WriteExit(u32 destination, bool bl, u32 after)
@@ -521,11 +538,11 @@ void Jit64::JustWriteExit(u32 destination, bool bl, u32 after)
   // Perform downcount flag check, followed by the requested exit
   if (bl)
   {
-    FixupBranch do_timing = J_CC(CC_LE, true);
+    FixupBranch do_timing = J_CC(CC_LE, Jump::Near);
     SwitchToFarCode();
     SetJumpTarget(do_timing);
     CALL(asm_routines.do_timing);
-    FixupBranch after_fixup = J(true);
+    FixupBranch after_fixup = J(Jump::Near);
     SwitchToNearCode();
 
     linkData.exitPtrs = GetWritableCodePtr();
@@ -540,7 +557,7 @@ void Jit64::JustWriteExit(u32 destination, bool bl, u32 after)
     J_CC(CC_LE, asm_routines.do_timing);
 
     linkData.exitPtrs = GetWritableCodePtr();
-    JMP(asm_routines.dispatcher_no_timing_check, true);
+    JMP(asm_routines.dispatcher_no_timing_check, Jump::Near);
   }
 
   b->linkData.push_back(linkData);
@@ -568,7 +585,7 @@ void Jit64::WriteExitDestInRSCRATCH(bool bl, u32 after)
   }
   else
   {
-    JMP(asm_routines.dispatcher, true);
+    JMP(asm_routines.dispatcher, Jump::Near);
   }
 }
 
@@ -598,8 +615,9 @@ void Jit64::WriteRfiExitDestInRSCRATCH()
   ABI_PushRegistersAndAdjustStack({}, 0);
   ABI_CallFunctionP(PowerPC::CheckExceptionsFromJIT, &m_system.GetPowerPC());
   ABI_PopRegistersAndAdjustStack({}, 0);
+  EmitUpdateMembase();
   SUB(32, PPCSTATE(downcount), Imm32(js.downcountAmount));
-  JMP(asm_routines.dispatcher, true);
+  JMP(asm_routines.dispatcher, Jump::Near);
 }
 
 void Jit64::WriteIdleExit(u32 destination)
@@ -619,8 +637,9 @@ void Jit64::WriteExceptionExit()
   ABI_PushRegistersAndAdjustStack({}, 0);
   ABI_CallFunctionP(PowerPC::CheckExceptionsFromJIT, &m_system.GetPowerPC());
   ABI_PopRegistersAndAdjustStack({}, 0);
+  EmitUpdateMembase();
   SUB(32, PPCSTATE(downcount), Imm32(js.downcountAmount));
-  JMP(asm_routines.dispatcher, true);
+  JMP(asm_routines.dispatcher, Jump::Near);
 }
 
 void Jit64::WriteExternalExceptionExit()
@@ -631,13 +650,15 @@ void Jit64::WriteExternalExceptionExit()
   ABI_PushRegistersAndAdjustStack({}, 0);
   ABI_CallFunctionP(PowerPC::CheckExternalExceptionsFromJIT, &m_system.GetPowerPC());
   ABI_PopRegistersAndAdjustStack({}, 0);
+  EmitUpdateMembase();
   SUB(32, PPCSTATE(downcount), Imm32(js.downcountAmount));
-  JMP(asm_routines.dispatcher, true);
+  JMP(asm_routines.dispatcher, Jump::Near);
 }
 
 void Jit64::Run()
 {
   ProtectStack();
+  m_system.GetJitInterface().UpdateMembase();
 
   CompiledCode pExecAddr = (CompiledCode)asm_routines.enter_code;
   pExecAddr();
@@ -648,6 +669,7 @@ void Jit64::Run()
 void Jit64::SingleStep()
 {
   ProtectStack();
+  m_system.GetJitInterface().UpdateMembase();
 
   CompiledCode pExecAddr = (CompiledCode)asm_routines.enter_code;
   pExecAddr();
@@ -744,6 +766,7 @@ void Jit64::Jit(u32 em_address, bool clear_cache_and_retry_on_failure)
     m_ppc_state.npc = nextPC;
     m_ppc_state.Exceptions |= EXCEPTION_ISI;
     m_system.GetPowerPC().CheckExceptions();
+    m_system.GetJitInterface().UpdateMembase();
     WARN_LOG_FMT(POWERPC, "ISI exception at {:#010x}", nextPC);
     return;
   }
@@ -829,9 +852,7 @@ bool Jit64::DoJit(u32 em_address, JitBlock* b, u32 nextPC)
   js.numFloatingPointInst = 0;
 
   // TODO: Test if this or AlignCode16 make a difference from GetCodePtr
-  u8* const start = AlignCode4();
-  b->checkedEntry = start;
-  b->normalEntry = start;
+  b->normalEntry = AlignCode4();
 
   // Used to get a trace of the last few blocks before a crash, sometimes VERY useful
   if (m_im_here_debug)
@@ -883,7 +904,7 @@ bool Jit64::DoJit(u32 em_address, JitBlock* b, u32 nextPC)
       ABI_CallFunctionPC(JitInterface::CompileExceptionCheckFromJIT, &m_system.GetJitInterface(),
                          static_cast<u32>(JitInterface::ExceptionType::PairedQuantize));
       ABI_PopRegistersAndAdjustStack({}, 0);
-      JMP(asm_routines.dispatcher_no_check, true);
+      JMP(asm_routines.dispatcher_no_check, Jump::Near);
       SwitchToNearCode();
 
       // Insert a check that the GQRs are still the value we expect at
@@ -950,17 +971,17 @@ bool Jit64::DoJit(u32 em_address, JitBlock* b, u32 nextPC)
     if (gatherPipeIntCheck)
     {
       TEST(32, PPCSTATE(Exceptions), Imm32(EXCEPTION_EXTERNAL_INT));
-      FixupBranch extException = J_CC(CC_NZ, true);
+      FixupBranch extException = J_CC(CC_NZ, Jump::Near);
 
       SwitchToFarCode();
       SetJumpTarget(extException);
       TEST(32, PPCSTATE(msr), Imm32(0x0008000));
-      FixupBranch noExtIntEnable = J_CC(CC_Z, true);
+      FixupBranch noExtIntEnable = J_CC(CC_Z, Jump::Near);
       MOV(64, R(RSCRATCH), ImmPtr(&m_system.GetProcessorInterface().m_interrupt_cause));
       TEST(32, MatR(RSCRATCH),
            Imm32(ProcessorInterface::INT_CAUSE_CP | ProcessorInterface::INT_CAUSE_PE_TOKEN |
                  ProcessorInterface::INT_CAUSE_PE_FINISH));
-      FixupBranch noCPInt = J_CC(CC_Z, true);
+      FixupBranch noCPInt = J_CC(CC_Z, Jump::Near);
 
       {
         RCForkGuard gpr_guard = gpr.Fork();
@@ -986,7 +1007,7 @@ bool Jit64::DoJit(u32 em_address, JitBlock* b, u32 nextPC)
       {
         // This instruction uses FPU - needs to add FP exception bailout
         TEST(32, PPCSTATE(msr), Imm32(1 << 13));  // Test FP enabled bit
-        FixupBranch b1 = J_CC(CC_Z, true);
+        FixupBranch b1 = J_CC(CC_Z, Jump::Near);
 
         SwitchToFarCode();
         SetJumpTarget(b1);
@@ -1027,7 +1048,7 @@ bool Jit64::DoJit(u32 em_address, JitBlock* b, u32 nextPC)
         Cleanup();
         MOV(32, PPCSTATE(npc), Imm32(op.address));
         SUB(32, PPCSTATE(downcount), Imm32(js.downcountAmount));
-        JMP(asm_routines.dispatcher_exit, true);
+        JMP(asm_routines.dispatcher_exit, Jump::Near);
 
         SetJumpTarget(noBreakpoint);
       }
@@ -1065,7 +1086,7 @@ bool Jit64::DoJit(u32 em_address, JitBlock* b, u32 nextPC)
         if (!js.fastmemLoadStore && !js.fixupExceptionHandler)
         {
           TEST(32, PPCSTATE(Exceptions), Imm32(EXCEPTION_DSI));
-          memException = J_CC(CC_NZ, true);
+          memException = J_CC(CC_NZ, Jump::Near);
         }
 
         SwitchToFarCode();
@@ -1139,7 +1160,7 @@ bool Jit64::DoJit(u32 em_address, JitBlock* b, u32 nextPC)
     return false;
   }
 
-  b->codeSize = (u32)(GetCodePtr() - start);
+  b->codeSize = static_cast<u32>(GetCodePtr() - b->normalEntry);
   b->originalSize = code_block.m_num_instructions;
 
 #ifdef JIT_LOG_GENERATED_CODE
@@ -1201,7 +1222,7 @@ void Jit64::IntializeSpeculativeConstants()
         ABI_CallFunctionPC(JitInterface::CompileExceptionCheckFromJIT, &m_system.GetJitInterface(),
                            static_cast<u32>(JitInterface::ExceptionType::SpeculativeConstants));
         ABI_PopRegistersAndAdjustStack({}, 0);
-        JMP(asm_routines.dispatcher_no_check, true);
+        JMP(asm_routines.dispatcher_no_check, Jump::Near);
         SwitchToNearCode();
       }
       CMP(32, PPCSTATE_GPR(i), Imm32(compileTimeValue));
