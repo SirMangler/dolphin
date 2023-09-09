@@ -60,3 +60,18 @@
 [submodule "Externals/curl/curl"]
 	path = Externals/curl/curl
 	url = https://github.com/curl/curl.git
+[submodule "Externals/fmt/fmt"]
+	path = Externals/fmt/fmt
+	url = https://github.com/fmtlib/fmt
+[submodule "Externals/hidapi/hidapi-src"]
+	path = Externals/hidapi/hidapi-src
+	url = https://github.com/libusb/hidapi
+[submodule "Externals/tinygltf/tinygltf"]
+	path = Externals/tinygltf/tinygltf
+	url = https://github.com/syoyo/tinygltf.git
+[submodule "Externals/xxhash/xxHash"]
+	path = Externals/xxhash/xxHash
+	url = https://github.com/Cyan4973/xxHash.git
+[submodule "Externals/lz4/lz4"]
+	path = Externals/lz4/lz4
+	url = https://github.com/lz4/lz4
