@@ -234,6 +234,7 @@ public:
 
   void GetInput(HotkeyStatus* hk, bool ignore_focus);
   std::string GetName() const override;
+  InputConfig* GetConfig() const override;
   ControllerEmu::ControlGroup* GetHotkeyGroup(HotkeyGroup group) const;
   int FindGroupByID(int id) const;
   int GetIndexForGroup(int group, int id) const;
