@@ -16,11 +16,6 @@
 
 #ifdef _WIN32
 #include <windows.h>
-
-#ifdef WINRT_XBOX
-#include "VideoBackends/D3DCommon/D3DCommon.h"
-#include "VideoCommon/ShaderCache.h"
-#endif
 #endif
 
 #include "AudioCommon/AudioCommon.h"
@@ -584,9 +579,6 @@ static void EmuThread(std::unique_ptr<BootParameters> boot, WindowSystemInfo wsi
     HW::Shutdown(system);
     INFO_LOG_FMT(CONSOLE, "{}", StopMessage(false, "HW shutdown"));
 
-    // Clear on screen messages that haven't expired
-    OSD::ClearMessages();
-
     // The config must be restored only after the whole HW has shut down,
     // not when it is still running.
     BootManager::RestoreConfig();
@@ -600,27 +592,17 @@ static void EmuThread(std::unique_ptr<BootParameters> boot, WindowSystemInfo wsi
 
   VideoBackendBase::PopulateBackendInfo(wsi);
 
-  if (!g_video_backend->Initialized())
+  if (!g_video_backend->Initialize(wsi))
   {
-    if (!g_video_backend->Initialize(wsi))
-    {
-      PanicAlertFmt("Failed to initialize video backend!");
-      return;
-    }
-
-    g_shader_cache->InitializeShaderCache();
+    PanicAlertFmt("Failed to initialize video backend!");
+    return;
   }
-  else
-  {
-    if (g_video_backend->GetName().find("D3D") != std::string::npos)
-    {
-      // Reload the libraries, as they get unloaded in the previous steps
-      D3DCommon::LoadLibraries();
-      g_shader_cache->InitializeShaderCache();
-    }
-  }
+  Common::ScopeGuard video_guard{[] {
+    // Clear on screen messages that haven't expired
+    OSD::ClearMessages();
 
-  Common::ScopeGuard video_guard{[] { g_video_backend->Shutdown(); }};
+    g_video_backend->Shutdown();
+  }};
 
   if (cpu_info.HTT)
     Config::SetBaseOrCurrent(Config::MAIN_DSP_THREAD, cpu_info.num_cores > 4);
