@@ -30,6 +30,10 @@
 #include "VideoCommon/AbstractTexture.h"
 #include "VideoCommon/TextureConfig.h"
 
+#include "VideoCommon/AbstractGfx.h"
+#include "VideoCommon/AbstractTexture.h"
+#include "VideoCommon/TextureConfig.h"
+
 namespace OSD
 {
 constexpr float LEFT_MARGIN = 10.0f;         // Pixels to the left of OSD messages.
