@@ -310,6 +310,7 @@ protected:
   void EndTimeProfile(JitBlock* b);
 
   void EmitUpdateMembase();
+  void EmitStoreMembase(u32 msr);
   void EmitStoreMembase(const Arm64Gen::ARM64Reg& msr);
 
   // Exits
