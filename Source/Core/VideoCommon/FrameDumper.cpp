@@ -231,7 +231,7 @@ void FrameDumper::FrameDumpThreadFunc()
       std::lock_guard<std::mutex> lk(m_screenshot_lock);
       // TODO felk: Events must happen inside the CPU thread, but this is inside the FrameDumper thread.
       // TODO felk: Maybe use the HookableEvent system instead? E.g. AfterFrameEvent. Might also be a good way to fix https://github.com/Felk/dolphin/issues/13
-      // API::GetEventHub().EmitEvent(API::Events::FrameDrawn{frame.width, frame.height, frame.data});
+      API::GetEventHub().EmitEvent(API::Events::FrameDrawn{frame.width, frame.height, frame.data});
 
       if (wants_screenshot)
       {
