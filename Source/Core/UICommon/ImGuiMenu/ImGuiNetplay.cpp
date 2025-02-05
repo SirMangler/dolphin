@@ -642,6 +642,11 @@ void ImGuiNetPlay::OnGolferChanged(bool is_golfer,
 {
 }
 
+void ImGuiNetPlay::OnTtlDetermined(u8 ttl)
+{
+  // noop
+}
+
 bool ImGuiNetPlay::IsRecording()
 {
   return false;

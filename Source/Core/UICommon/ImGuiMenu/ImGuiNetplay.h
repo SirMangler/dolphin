@@ -43,6 +43,7 @@ class ImGuiNetPlay : public NetPlay::NetPlayUI
   void OnTraversalStateChanged(Common::TraversalClient::State state) override;
   void OnGameStartAborted() override;
   void OnGolferChanged(bool is_golfer, const std::string& golfer_name) override;
+  void OnTtlDetermined(u8 ttl) override;
 
   bool IsRecording() override;
   std::shared_ptr<const UICommon::GameFile>
